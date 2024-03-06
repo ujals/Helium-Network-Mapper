@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+import os
 from geopy.distance import geodesic
-
 app = Flask(__name__)
 CORS(app)
 CORS(app, resources={r"/check_availability": {"origins": ["http://35.160.120.126", "http://44.233.151.27", "http://34.211.200.85"]}})
+base_url = "https://entities.nft.helium.io/v2"
 base_url = "https://entities.nft.helium.io/v2"
 
 # Replace 'YOUR_HELIUM_API_KEY' with your actual Helium API key
@@ -220,5 +221,7 @@ def check_availability():
         return jsonify({"error": "Failed to fetch geocode data"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    # Use the PORT environment variable if available, otherwise default to 8080
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port)
 
