@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helium Hotspot Checker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <style>
+        @mixin glassmorphism() {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+            margin: 0;
+            color: #fff;
+        }
+
+        .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: radial-gradient(circle at 30% 86%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 8%, transparent 8%, transparent 92%), radial-gradient(circle at 55% 100%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 8%, transparent 8%, transparent 92%), radial-gradient(circle at 40% 75%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 7% 99%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 69% 76%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 2% 35%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 14% 48%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 28% 87%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), radial-gradient(circle at 65% 14%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), radial-gradient(circle at 51% 36%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), radial-gradient(circle at 6% 93%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), linear-gradient(135deg, rgb(23, 233, 173), rgb(29, 24, 208));
+            height: 100%;
+        }
+
+        .form-signin-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .form-signin {
+            flex: 1;
+            @include glassmorphism();
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            text-align: center;
+            margin-right: 10px;
+
+            h1 {
+                @include glassmorphism();
+                margin-top: 0px;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                color: #fff;
+                padding: 15px;
+                text-align: center;
+            }
+
+            form {
+                padding: 15px;
+
+                .btn {
+                    @include glassmorphism;
+                    color: #fff;
+                    font-size: 16px;
+
+                    &:hover,
+                    &:focus {
+                        background: rgba(255, 255, 255, 0.1);
+                        box-shadow: none;
+                    }
+                }
+
+                .form-control:focus {
+                    border-color: #ced4da;
+                    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+                }
+            }
+
+            .copyright {
+                text-align: center;
+                color: rgba(255, 255, 255, 0.65);
+            }
+
+            .form-control {
+                background: rgba(255, 255, 255, 0.9);
+                color: #fff;
+                font-size: 16px;
+            }
+
+            .form-check {
+                display: flex;
+                align-items: center;
+                color: rgba(255, 255, 255, 0.65);
+
+                label {
+                    font-size: 0.9em;
+                }
+
+                input {
+                    margin-right: 0.5em;
+
+                    &:checked {
+                        background-color: #9ce060;
+                        border-color: #81c63f;
+                    }
+                }
+            }
+
+            .form-floating {
+                &:focus-within {
+                    z-index: 2;
+                }
+            }
+
+            input[type="text"] {
+                margin-bottom: -1px;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            input[type="password"] {
+                margin-bottom: 10px;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+
+            .loading-spinner {
+                border: 8px solid rgba(255, 255, 255, 0.3);
+                border-top: 8px solid #ffffff;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                margin: 20px auto;
+                /* Adjust margin as needed */
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        }
+
+        .widget {
+            flex: 1;
+            @include glassmorphism();
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            margin-left: 10px;
+            overflow-y: auto;
+            /* Add scrollbar */
+            max-height: 400px;
+            /* Set maximum height to control scrollbar appearance */
+
+            h2 {
+                @include glassmorphism();
+                margin-top: 0px;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                color: #fff;
+                padding: 15px;
+                text-align: center;
+            }
+
+            p {
+                color: #fff;
+                font-size: 18px;
+                line-height: 1.6;
+            }
+
+            .hotspot-list {
+                color: #fff;
+                max-height: 300px;
+                /* Set maximum height for the hotspot list */
+                overflow-y: auto;
+                /* Add scrollbar to hotspot list */
+            }
+
+            .profile-pic {
+                width: 100px;
+                /* Set width for the profile picture */
+                height: 100px;
+                /* Set height for the profile picture */
+                border-radius: 50%;
+                /* Make it a circle */
+                margin: 0 auto;
+                /* Center the profile picture */
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg"></div>
+
+    <div class="form-signin-container">
+        <main class="form-signin">
+            <h1 class="h3">Helium Hotspot Checker</h1>
+
+            <form onsubmit="event.preventDefault(); checkAvailability();">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="latitude" placeholder="Latitude" required>
+                    <label for="latitude">Latitude</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="longitude" placeholder="Longitude" required>
+                    <label for="longitude">Longitude</label>
+                </div>
+
+                <div class="checkbox mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" value="1" name="remember_me"
+                            id="rememberMeSwitch">
+                        <label class="form-check-label" for="rememberMeSwitch"> Remember me</label>
+                    </div>
+                </div>
+                <button class="w-100 btn btn-lg" type="submit">Check Availability</button>
+            </form>
+            <p class="copyright">&copy;6 March 2024</p>
+        </main>
+
+        <div class="widget" id="result">
+            <!-- Results will be displayed here -->
+        </div>
+
+        <div class="widget">
+            <h2>About Me</h2>
+            <img class="profile-pic" src="your-profile-pic-url.jpg" alt="Profile Picture">
+            <p>I'm the creator of this site. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet velit
+                id felis fermentum ultrices. Vestibulum et turpis eu nunc luctus efficitur vel ac libero.</p>
+        </div>
+    </div>
+
+    <script>
+        function checkAvailability() {
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+
+            if (!latitude || !longitude) {
+                alert("Please enter both Latitude and Longitude.");
+                return;
+            }
+
+            // Show loading spinner
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="loading-spinner"></div>';
+
+            fetch('http://127.0.0.1:5000/check_availability', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        latitude,
+                        longitude
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Log the response for debugging
+                    console.log('Response:', data);
+
+                    // Display the response details
+                    resultDiv.innerHTML = ''; // Clear previous result
+
+                    const availabilityMsg = document.createElement('p');
+                    availabilityMsg.textContent = data.availability || 'Error fetching data.';
+                    resultDiv.appendChild(availabilityMsg);
+
+                    if (!data.error) {
+                        const hotspotDetails = document.createElement('p');
+                        hotspotDetails.textContent = `Hotspot Location: Lat ${data.hotspot.lat}, Lon ${data.hotspot.lon}`;
+                        resultDiv.appendChild(hotspotDetails);
+
+                        const countryDetails = document.createElement('p');
+                        countryDetails.textContent = `Country: ${data.country_name}, Address: ${data.country_address}`;
+                        resultDiv.appendChild(countryDetails);
+
+                        const totalHotspots = document.createElement('p');
+                        totalHotspots.textContent = `Total Hotspots in Country: ${data.total_hotspots_in_country}`;
+                        resultDiv.appendChild(totalHotspots);
+
+                        // Display hotspots within range with asset key
+                        const hotspotsList = document.createElement('div');
+                        hotspotsList.className = 'hotspot-list';
+                        hotspotsList.innerHTML = '<h3>Hotspots Within Range:</h3>';
+                        data.hotspots_within_range.forEach(hotspot => {
+                            const hotspotItem = document.createElement('p');
+                            hotspotItem.textContent = `Asset Key: ${hotspot.key_to_asset_key}, Active: ${hotspot.is_active}, Location: Lat ${hotspot.lat}, Lon ${hotspot.long}`;
+                            hotspotsList.appendChild(hotspotItem);
+                        });
+                        resultDiv.appendChild(hotspotsList);
+                    } else {
+                        // Display error message
+                        const errorDetails = document.createElement('p');
+                        errorDetails.textContent = `Error: ${data.error}`;
+                        resultDiv.appendChild(errorDetails);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    // Show error message
+                    alert('Error fetching data.');
+                });
+        }
+    </script>
+
+    <!-- Bootstrap JS (optional, only needed if you use Bootstrap JS features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
