@@ -5,7 +5,7 @@ from geopy.distance import geodesic
 
 app = Flask(__name__)
 CORS(app)
-CORS(app, resources={r"/check_availability": {"origins": "*"}})
+CORS(app, resources={r"/check_availability": {"origins": ["http://35.160.120.126", "http://44.233.151.27", "http://34.211.200.85"]}})
 base_url = "https://entities.nft.helium.io/v2"
 
 # Replace 'YOUR_HELIUM_API_KEY' with your actual Helium API key
