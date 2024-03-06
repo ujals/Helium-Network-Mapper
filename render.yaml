@@ -1,4 +1,11 @@
+# render.yaml
+
 services:
-- name: web
-  buildCommand: pip install -r requirements.txt
-  startCommand: gunicorn -b 0.0.0.0:$PORT flaskMapperHelium:app
+  - name: web
+    envVars:
+      - key: FLASK_APP
+        value: flaskMapperHelium.py
+      - key: FLASK_ENV
+        value: production
+    startCommand: python flaskMapperHelium.py
+    # Add other configurations as needed
